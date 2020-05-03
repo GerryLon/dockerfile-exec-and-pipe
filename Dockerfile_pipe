@@ -2,7 +2,7 @@ FROM alpine
 
 COPY ./main ./
 
-RUN chmod 0755 ./main && echo "./main 2>&1 | tee -a /tmp/a.log" > ./start.sh
+RUN chmod 0755 ./main && echo "exec ./main 2>&1 | tee -a /tmp/a.log" > ./start.sh
 
 ENTRYPOINT ["/bin/sh", "./start.sh"]
 
