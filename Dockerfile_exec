@@ -1,0 +1,14 @@
+FROM alpine
+
+# 使用阿里源, 可选
+RUN ver=$(grep -E -o '[0-9]+\.[0-9]+$' /etc/issue); \
+	printf "http://mirrors.aliyun.com/alpine/v%s/main/\nhttp://mirrors.aliyun.com/alpine/v%s/community/"  $ver $ver  >/etc/apk/repositories
+
+RUN apk add --no-cache bash
+
+COPY ./main ./
+
+RUN chmod 0755 ./main && echo "exec 8> >(tee -a /tmp/a.log); exec ./main >&8 2>&1" > ./start.sh
+
+ENTRYPOINT ["/bin/bash", "./start.sh"]
+
